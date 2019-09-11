@@ -52,6 +52,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(logger('dev'));
 }
 
+app.use(express.static('build'));
+
 app.get('/info', (req, res) => {
   const options = {
     weekday: 'short',
