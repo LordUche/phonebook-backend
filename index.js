@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const app = express();
+app.disable('x-powered-by');
 const PORT = process.env.PORT || 3001;
 
 let persons = [
