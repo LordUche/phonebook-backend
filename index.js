@@ -75,7 +75,10 @@ app.post('/api/persons', (req, res, next) => {
   Person.findOne({ name: req.body.name }).then(person => {
     if (person) {
       person.number = req.body.number;
-      person.save().then(person => res.json(person.toJSON()));
+      person
+        .save()
+        .then(person => res.json(person.toJSON()))
+        .catch(error => next(error));
     } else {
       const newPerson = new Person({ ...req.body });
       newPerson
@@ -92,13 +95,13 @@ app.post('/api/persons', (req, res, next) => {
   });
 });
 
-app.put('/api/persons/:id', (req, res) => {
+app.put('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   })
     .then(person => res.json(person.toJSON()))
-    .catch(error => res.status(404).end());
+    .catch(error => next(error));
 });
 
 app.delete('/api/persons/:id', (req, res) => {
