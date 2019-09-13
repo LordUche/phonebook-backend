@@ -19,7 +19,7 @@ const errorHandler = (error, req, res, next) => {
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformed id' });
   } else if (error.name === 'ValidationError') {
-    return res.status(400).json({ error: error.message })
+    return res.status(400).json({ error: error.message });
   }
 
   next(error);
@@ -93,7 +93,10 @@ app.post('/api/persons', (req, res, next) => {
 });
 
 app.put('/api/persons/:id', (req, res) => {
-  Person.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  Person.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then(person => res.json(person.toJSON()))
     .catch(error => res.status(404).end());
 });
